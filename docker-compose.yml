@@ -1,0 +1,25 @@
+db:
+  image: postgres
+redis:
+  image: redis
+dragon:
+  build: .
+  command: python server.py 0.0.0.0:9999
+  ports:
+   - "9999:9999"
+  volumes:
+    - .:/code
+  links:
+   - db
+   - redis
+web:
+  build: .
+  command: python manage.py runserver 0.0.0.0:8000
+  volumes:
+    - .:/code
+  ports:
+   - "8000:8000"
+  links:
+   - db
+   - redis
+   - dragon

@@ -10,7 +10,7 @@ function get_static(path) {
 
 ChatApp.config(function($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
-        controller: "ChatCtrl",
+        controller: "ChatRoomCtrl",
         templateUrl: get_static("/partials/chatroom.html")
   });
 });

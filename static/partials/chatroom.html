@@ -1,15 +1,16 @@
 <div ng-controller="RoomCtrl">
     <ul>
         <li ng-repeat="item in rooms">
-            {{ item.name }}
+            <span ng-click="changeRoom(item)">{{ item.name }}</span>
         </li>
     </ul>
 </div>
 
 
-<div ng-controller="ChatCtrl">
+<div ng-controller="ChatRoomCtrl">
+    <h2>{{ ChatStatus.selectedRoom.name }}</h2>
     <ul>
-        <li ng-repeat="item in messages | orderBy: 'posted'">
+        <li ng-repeat="item in messages | filter:{'room': ChatStatus.selectedRoom.id}:true | orderBy: 'posted'">
             {{ item.user }}: {{ item.text }}
         </li>
     </ul>

@@ -1,14 +1,25 @@
-var ChatControllers = angular.module('ChatControllers', ['restangular']);
+var app = angular.module('ChatControllers', ['restangular']);
 
-ChatControllers.controller('ChatCtrl', ['$scope', '$dragon', function ($scope, $dragon) {
+app.factory('ChatStatus', function() {
+    var data = {
+        selectedRoom: 1
+    };
+    return data;
+});
+
+
+app.controller('ChatRoomCtrl',
+        ['$scope', '$dragon', 'ChatStatus', function (
+            $scope, $dragon, ChatStatus) {
     $scope.messages = [];
     $scope.channel = 'messages';
+    $scope.ChatStatus = ChatStatus;
 
     $dragon.onReady(function() {
         $dragon.subscribe('messages', $scope.channel).then(function(response) {
             $scope.dataMapper = new DataMapper(response.data);
         });
-        $dragon.getList('messages', {list_id:1}).then(function(response) {
+        $dragon.getList('messages', {list_id: 1}).then(function(response) {
             $scope.messages = response.data;
         });
     });
@@ -23,12 +34,14 @@ ChatControllers.controller('ChatCtrl', ['$scope', '$dragon', function ($scope, $
 }]);
 
 
-ChatControllers.controller('SendChatCtrl', ['$scope', '$http', function($scope, $http) {
+app.controller('SendChatCtrl', [
+        '$scope', '$http', 'ChatStatus', function(
+            $scope, $http, ChatStatus) {
     $scope.sendForm = {};
     $scope.sendForm.text = '';
     $scope.sendForm.submit = function() {
         var data = {
-            "room": 1,
+            "room": ChatStatus.selectedRoom.id,
             "text": $scope.sendForm.text
         } 
         $http.post("/api/messages/", data)
@@ -41,6 +54,14 @@ ChatControllers.controller('SendChatCtrl', ['$scope', '$http', function($scope, 
 }]);
 
 
-ChatControllers.controller('RoomCtrl', ['$scope', 'Restangular', function($scope, Restangular) {
-    $scope.rooms = Restangular.all('rooms').getList().$object;
+app.controller('RoomCtrl', ['$scope', 'Restangular', 'ChatStatus', function($scope, Restangular, ChatStatus) {
+    $scope.changeRoom = function(room) {
+        ChatStatus.selectedRoom = room;
+    }
+    $scope.rooms = Restangular.all('rooms').getList()
+    .then(function(rooms) {
+        ChatStatus.rooms = rooms;
+        ChatStatus.selectedRoom = rooms[0];
+        $scope.rooms = rooms;
+    })
 }]);

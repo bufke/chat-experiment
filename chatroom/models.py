@@ -3,17 +3,17 @@ from swampdragon.models import SelfPublishModel
 from .dragon_serializers import MessageSerializer
 
 
+class Profile(models.Model):
+    user = models.OneToOneField('auth.User', primary_key=True)
+
+
 class Organization(models.Model):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
+    users = models.ManyToManyField(Profile)
 
     def __str__(self):
         return self.name
-
-
-class Profile(models.Model):
-    user = models.ForeignKey('auth.User')
-    organizations = models.ManyToManyField(Organization)
 
 
 class Room(models.Model):

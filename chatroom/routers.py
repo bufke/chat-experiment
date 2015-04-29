@@ -16,5 +16,8 @@ class MessageRouter(ModelRouter):
     def get_query_set(self, **kwargs):
         return self.model.objects.all()
 
+    def get_subscription_contexts(self, **kwargs):
+        return {'room__organization__users': self.connection.user.pk}
+
 
 route_handler.register(MessageRouter)

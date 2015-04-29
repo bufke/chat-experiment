@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('auth', '0001_initial'),
     ]
 
     operations = [
@@ -21,6 +22,7 @@ class Migration(migrations.Migration):
                 ('posted', models.DateTimeField(auto_now_add=True)),
             ],
             options={
+                'ordering': ['-posted'],
             },
             bases=(swampdragon.models.SelfPublishModel, models.Model),
         ),
@@ -38,9 +40,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('organizations', models.ManyToManyField(to='chatroom.Organization')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, serialize=False, primary_key=True)),
             ],
             options={
             },
@@ -57,6 +57,12 @@ class Migration(migrations.Migration):
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='organization',
+            name='users',
+            field=models.ManyToManyField(to='chatroom.Profile'),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='message',

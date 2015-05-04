@@ -9,17 +9,28 @@ app.factory('ChatStatus', function() {
 
 
 app.controller('ChatRoomCtrl',
-        ['$scope', '$dragon', 'ChatStatus', function (
-            $scope, $dragon, ChatStatus) {
+        ['$scope', '$dragon', 'ChatStatus', 'Users', function (
+            $scope, $dragon, ChatStatus, Users) {
     $scope.messages = [];
     $scope.channel = 'messages';
     $scope.ChatStatus = ChatStatus;
+    
+    $scope.idToUser = function(id) {
+        var user;
+        user = $scope.users.filter(function(obj) {
+            return obj.pk == id;
+        });
+        return user[0].display_name;
+    };
+    Users.getList().then(function(users) {
+        $scope.users = users;
+    });
 
     $dragon.onReady(function() {
         $dragon.subscribe('messages', $scope.channel).then(function(response) {
             $scope.dataMapper = new DataMapper(response.data);
         });
-        $dragon.getList('messages', {list_id: 1}).then(function(response) {
+        $dragon.getList('messages').then(function(response) {
             $scope.messages = response.data;
         });
     });
@@ -35,8 +46,8 @@ app.controller('ChatRoomCtrl',
 
 
 app.controller('SendChatCtrl', [
-        '$scope', '$http', 'ChatStatus', function(
-            $scope, $http, ChatStatus) {
+        '$scope', 'Messages', 'ChatStatus', function(
+            $scope, Messages, ChatStatus) {
     $scope.sendForm = {};
     $scope.sendForm.text = '';
     $scope.sendForm.submit = function() {
@@ -44,11 +55,10 @@ app.controller('SendChatCtrl', [
             "room": ChatStatus.selectedRoom.id,
             "text": $scope.sendForm.text
         } 
-        $http.post("/api/messages/", data)
-        .success(function(data, status, headers, config) {
-                $scope.sendForm.text = '';
-        }).error(function(data, status, headers, config) {
-                $scope.status = status;
+        Messages.post(data).then(function() {
+            $scope.sendForm.text = '';
+        }, function(error) {
+            $scope.status = 'error';
         });
     };
 }]);
@@ -64,4 +74,11 @@ app.controller('RoomCtrl', ['$scope', 'Restangular', 'ChatStatus', function($sco
         ChatStatus.selectedRoom = rooms[0];
         $scope.rooms = rooms;
     })
+}]);
+
+app.factory('Users', ['Restangular', function(Restangular) {
+    return Restangular.service('users');
+}]);
+app.factory('Messages', ['Restangular', function(Restangular) {
+    return Restangular.service('messages');
 }]);

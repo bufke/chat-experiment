@@ -11,7 +11,7 @@
     <h2>{{ ChatStatus.selectedRoom.name }}</h2>
     <ul>
         <li ng-repeat="item in messages | filter:{'room': ChatStatus.selectedRoom.id}:true | orderBy: 'posted'">
-            {{ item.user }}: {{ item.text }}
+            {{ idToUser(item.user) }}: {{ item.text }}
         </li>
     </ul>
 </div>

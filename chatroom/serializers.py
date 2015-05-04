@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Message, Room
+from .models import Message, Room, Profile
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('pk', 'display_name')
 
 
 class MessageSerializer(serializers.ModelSerializer):

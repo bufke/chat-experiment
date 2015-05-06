@@ -1,0 +1,19 @@
+html, body, .chat-ng-view, .chat-container, .chat-row, .chat-column, .chat-window {
+	height: 100%;
+	overflow: hidden;
+}
+
+.chat-window ul {
+	height: 80%;
+	overflow-y: scroll;
+}
+
+.chat-window li {
+	padding: 7px 0;
+}
+
+.chat-textbox {
+	position: fixed;
+	margin: 0 10px 10px 0;
+	bottom: 0;
+}

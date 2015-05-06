@@ -1,21 +1,30 @@
-<div ng-controller="RoomCtrl">
-    <ul>
-        <li ng-repeat="item in rooms">
-            <span ng-click="changeRoom(item)">{{ item.name }}</span>
-        </li>
-    </ul>
+<div class="container-fluid chat-container">
+    <div class="row chat-row">
+        <div ng-controller="RoomCtrl" class="col-sm-3 nav-column">
+            <h2>Rooms</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li ng-repeat="item in rooms">
+                    <a href="javascript:void(0);" ng-click="changeRoom(item)">{{ item.name }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 chat-column">
+            <div ng-controller="ChatRoomCtrl" class="chat-window">
+                <h2>{{ ChatStatus.selectedRoom.name }}</h2>
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in messages | filter:{'room': ChatStatus.selectedRoom.id}:true | orderBy: 'posted'">
+                        <em>{{ idToUser(item.user) }}</em>: {{ item.text }}
+                    </li>
+                </ul>
+            </div>
+            <form ng-controller="SendChatCtrl" ng-submit="sendForm.submit()">
+                <div class="input-group chat-textbox">
+                    <input type="text" class="form-control" ng-model="sendForm.text" placeholder="Say something I'm giving up on you">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">SPEAK</button>
+                    </span>
+                </div><!-- /input-group -->
+            </form>
+        </div>
+    </div>
 </div>
-
-
-<div ng-controller="ChatRoomCtrl">
-    <h2>{{ ChatStatus.selectedRoom.name }}</h2>
-    <ul>
-        <li ng-repeat="item in messages | filter:{'room': ChatStatus.selectedRoom.id}:true | orderBy: 'posted'">
-            {{ idToUser(item.user) }}: {{ item.text }}
-        </li>
-    </ul>
-</div>
-<form ng-controller="SendChatCtrl" ng-submit="sendForm.submit()">
-    <input type="text" ng-model="sendForm.text"></input>
-    <input type="submit"></input>
-</form>

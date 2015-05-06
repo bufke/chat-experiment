@@ -10,7 +10,7 @@
 <div ng-controller="ChatRoomCtrl">
     <h2>{{ ChatStatus.selectedRoom.name }}</h2>
     <ul>
-        <li ng-repeat="item in messages | filter:{'room': ChatStatus.selectedRoom.id}:true | orderBy: 'posted'">
+        <li ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'">
             {{ idToUser(item.user) }}: {{ item.text }}
         </li>
     </ul>

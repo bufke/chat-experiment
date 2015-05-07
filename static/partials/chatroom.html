@@ -15,7 +15,6 @@
             <h2>{{ ChatStatus.selectedRoom.name }}</h2>
             <ul class="list-unstyled">
                 <li ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'">
-                    ummm
                     <em>{{ idToUser(item.user) }}</em>: {{ item.text }}
                 </li>
             </ul>

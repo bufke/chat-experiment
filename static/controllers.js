@@ -2,7 +2,8 @@ var app = angular.module('ChatControllers', ['restangular']);
 
 app.factory('ChatStatus', function() {
     var data = {
-        selectedRoom: 1
+        selectedRoom: 1,
+        messages: {}
     };
     return data;
 });
@@ -11,7 +12,6 @@ app.factory('ChatStatus', function() {
 app.controller('ChatRoomCtrl',
         ['$scope', '$dragon', 'ChatStatus', 'Users', function (
             $scope, $dragon, ChatStatus, Users) {
-    $scope.messages = [];
     $scope.channel = 'messages';
     $scope.ChatStatus = ChatStatus;
     
@@ -30,16 +30,16 @@ app.controller('ChatRoomCtrl',
         $dragon.subscribe('messages', $scope.channel).then(function(response) {
             $scope.dataMapper = new DataMapper(response.data);
         });
-        $dragon.getList('messages').then(function(response) {
-            $scope.messages = response.data;
-        });
     });
 
     $dragon.onChannelMessage(function(channels, message) {
         if (indexOf.call(channels, $scope.channel) > -1) {
-            $scope.$apply(function() {
-                $scope.dataMapper.mapData($scope.messages, message);
-            });
+            if (ChatStatus.messages[message.data.room].indexOf(message.data) == -1) {
+                $scope.$apply(function() {
+                    ChatStatus.messages[message.data.room].push(message.data);
+                    console.log(ChatStatus.messages[message.data.room]);
+                });
+            }
         }
     });
 }]);
@@ -64,11 +64,14 @@ app.controller('SendChatCtrl', [
 }]);
 
 
-app.controller('RoomCtrl', ['$scope', 'Restangular', 'ChatStatus', function($scope, Restangular, ChatStatus) {
+app.controller('RoomCtrl', ['$scope', 'Rooms', 'Messages', 'ChatStatus', function($scope, Rooms, Messages, ChatStatus) {
     $scope.changeRoom = function(room) {
         ChatStatus.selectedRoom = room;
+        Messages.getList({'room': room.id}).then(function(messages) {
+            ChatStatus.messages[room.id] = messages;
+        });
     }
-    $scope.rooms = Restangular.all('rooms').getList()
+    $scope.rooms = Rooms.getList()
     .then(function(rooms) {
         ChatStatus.rooms = rooms;
         ChatStatus.selectedRoom = rooms[0];
@@ -78,6 +81,9 @@ app.controller('RoomCtrl', ['$scope', 'Restangular', 'ChatStatus', function($sco
 
 app.factory('Users', ['Restangular', function(Restangular) {
     return Restangular.service('users');
+}]);
+app.factory('Rooms', ['Restangular', function(Restangular) {
+    return Restangular.service('rooms');
 }]);
 app.factory('Messages', ['Restangular', function(Restangular) {
     return Restangular.service('messages');

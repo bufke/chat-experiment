@@ -35,9 +35,9 @@ app.controller('ChatRoomCtrl',
     $dragon.onChannelMessage(function(channels, message) {
         if (indexOf.call(channels, $scope.channel) > -1) {
             if (ChatStatus.messages[message.data.room].indexOf(message.data) == -1) {
+                message.data.posted = new Date(message.data.posted);
                 $scope.$apply(function() {
                     ChatStatus.messages[message.data.room].push(message.data);
-                    console.log(ChatStatus.messages[message.data.room]);
                 });
             }
         }
@@ -68,6 +68,9 @@ app.controller('RoomCtrl', ['$scope', 'Rooms', 'Messages', 'ChatStatus', functio
     $scope.changeRoom = function(room) {
         ChatStatus.selectedRoom = room;
         Messages.getList({'room': room.id}).then(function(messages) {
+            angular.forEach(messages, function(message, key) {
+                message.posted = new Date(message.posted);
+            });
             ChatStatus.messages[room.id] = messages;
         });
     }

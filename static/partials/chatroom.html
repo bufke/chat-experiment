@@ -1,5 +1,5 @@
 <div class="container-fluid chat-container">
-   <div class="row chat-row">
+    <div class="row chat-row">
         <div ng-controller="RoomCtrl" class="col-sm-3 nav-column">
             <h2>Rooms</h2>
             <ul class="nav nav-pills nav-stacked">
@@ -10,22 +10,23 @@
         </div>
 
 
-    <div class="col-sm-9 chat-column">
-        <div ng-controller="ChatRoomCtrl" class="chat-window">
-            <h2>{{ ChatStatus.selectedRoom.name }}</h2>
-            <ul class="list-unstyled">
-                <li ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'">
-                    <em>{{ idToUser(item.user) }}</em>: {{ item.text }}
-                </li>
-            </ul>
-        </div>
-        <form ng-controller="SendChatCtrl" ng-submit="sendForm.submit()">
-            <div class="input-group chat-textbox">
-                <input type="text" class="form-control" ng-model="sendForm.text"></input>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">SPEAK</button>
-                </span>
+        <div class="col-sm-9 chat-column">
+            <div ng-controller="ChatRoomCtrl" class="chat-window">
+                <h2>{{ ChatStatus.selectedRoom.name }}</h2>
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'">
+                        <em>{{ idToUser(item.user) }}</em>: {{ item.text }}
+                    </li>
+                </ul>
             </div>
-        </form>
+            <form ng-controller="SendChatCtrl" ng-submit="sendForm.submit()">
+                <div class="input-group chat-textbox">
+                    <input type="text" class="form-control" ng-model="sendForm.text"></input>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">SPEAK</button>
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

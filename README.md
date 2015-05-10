@@ -1,5 +1,5 @@
 # chat-experiment
-Chat and Django
+Chat with Django Rest Framework, Swampdragon, and Angular
 
 Just an experiment for now. To run:
 

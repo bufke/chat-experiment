@@ -1,12 +1,24 @@
 <div class="container-fluid chat-container">
     <div class="row chat-row">
-        <div ng-controller="RoomCtrl" class="col-sm-3 nav-column">
-            <h2>Rooms</h2>
-            <ul class="nav nav-pills nav-stacked">
-                <li ng-repeat="item in rooms">
-                    <span ng-click="changeRoom(item)">{{ item.name }}</span>
-                </li>
-            </ul>
+        <div class="col-sm-3 nav-column">
+            <div ng-controller="RoomCtrl">
+                <h2>Rooms</h2>
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-repeat="item in rooms">
+                        <span ng-click="changeRoom(item)">{{ item.name }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-controller="UsersCtrl" class="col-sm-3 nav-column">
+                <h2>Users</h2>
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-repeat="item in users">
+                        <span>{{ item.name }}</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
 

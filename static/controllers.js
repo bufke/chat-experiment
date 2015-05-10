@@ -82,6 +82,12 @@ app.controller('RoomCtrl', ['$scope', 'Rooms', 'Messages', 'ChatStatus', functio
     })
 }]);
 
+
+app.controller('UsersCtrl', ['$scope', 'ChatStatus', function($scope, ChatStatus) {
+
+}]);
+
+
 app.factory('Users', ['Restangular', function(Restangular) {
     return Restangular.service('users');
 }]);

@@ -10,7 +10,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        user = self.request.user
+        user = self.request.user.profile
         return qs.filter(
             Q(organization__users=user) | Q(room__users=user)).distinct()
 
@@ -25,7 +25,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        user = self.request.user
+        user = self.request.user.profile
         return qs.filter(room__users=user)
 
 
@@ -34,6 +34,6 @@ class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
 
     def get_queryset(self):
-        user = self.request.user
+        user = self.request.user.profile
         return Room.objects.filter(
             Q(organization__users=user) | Q(users=user)).distinct()

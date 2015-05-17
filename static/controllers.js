@@ -30,6 +30,7 @@ app.controller('ChatRoomCtrl',
         $dragon.subscribe('messages', $scope.channel).then(function(response) {
             $scope.dataMapper = new DataMapper(response.data);
         });
+        //$dragon.subscribe('users', $scope.channel);
     });
 
     $dragon.onChannelMessage(function(channels, message) {

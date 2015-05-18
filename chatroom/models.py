@@ -7,6 +7,8 @@ from .dragon_serializers import MessageSerializer
 class Profile(models.Model):
     user = models.OneToOneField('auth.User', primary_key=True)
     display_name = models.CharField(max_length=100)
+    is_online = models.BooleanField(default=False)
+    status = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.display_name

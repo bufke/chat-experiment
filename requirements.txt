@@ -1,7 +1,8 @@
 psycopg2==2.6
-django==1.7.7
-swampdragon
+django==1.8.1
+swampdragon==0.4.2.2
 swampdragon-auth
+swampdragon-notifications
 djangorestframework==3.1.1
 django-filter
 django-allauth

@@ -24,9 +24,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.min.js"></script>
 
 {% swampdragon_settings %}
-<script src="{% static 'swampdragon/js/dist/swampdragon.min.js' %}"></script>
+<script src="{% static 'swampdragon/js/dist/swampdragon.js' %}"></script>
 <script src="{{ STATIC_URL }}swampdragon/js/dist/datamapper.js"></script>
 <script src="{{ STATIC_URL }}swampdragon/js/angular/services.js"></script>
+<script src="{% static 'js/dist/swampdragon-notifications.js' %}"></script>
 
 <!-- To-do app -->
 <script src="{{ STATIC_URL }}app.js"></script>

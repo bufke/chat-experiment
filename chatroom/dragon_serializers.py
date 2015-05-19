@@ -7,7 +7,7 @@ class MessageSerializer(ModelSerializer):
         publish_fields = ('user', 'text', 'posted', 'room')
 
 
-class UserSerializer(ModelSerializer):
+class ProfileSerializer(ModelSerializer):
     class Meta:
         model = 'chatroom.Profile'
-        publish_fields = ('pk', 'is_online')
+        publish_fields = ('pk', 'is_online', 'display_name')

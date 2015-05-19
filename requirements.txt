@@ -6,3 +6,7 @@ swampdragon-notifications
 djangorestframework==3.1.1
 django-filter
 django-allauth
+
+#dev
+werkzeug
+django-extensions

@@ -26,8 +26,15 @@
             <div ng-controller="ChatRoomCtrl" class="chat-window">
                 <h2>{{ ChatStatus.selectedRoom.name }}</h2>
                 <ul class="list-unstyled">
-                    <li ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'">
-                        <em>{{ idToUser(item.user) }}</em>: {{ item.text }}
+                    <li 
+                        ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'"
+                        ng-init="user = idToUser(item.user)"
+                    >
+                        <em>{{ user.display_name }}</em>
+                        <span ng-if="user.is_online">
+                        (Online)
+                        </span>
+                        : {{ item.text }}
                     </li>
                 </ul>
             </div>

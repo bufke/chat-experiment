@@ -39,6 +39,10 @@ app.controller('ChatRoomCtrl',
                 message.data.posted = new Date(message.data.posted);
                 $scope.$apply(function() {
                     ChatStatus.messages[message.data.room].push(message.data);
+
+                    setTimeout(function() {
+                        scrollToBottom();
+                    }, 30);
                 });
             }
         }
@@ -73,6 +77,10 @@ app.controller('RoomCtrl', ['$scope', 'Rooms', 'Messages', 'ChatStatus', functio
                 message.posted = new Date(message.posted);
             });
             ChatStatus.messages[room.id] = messages;
+
+            setTimeout(function() {
+                scrollToBottom();
+            }, 30);
         });
     }
     $scope.rooms = Rooms.getList()
@@ -98,3 +106,13 @@ app.factory('Rooms', ['Restangular', function(Restangular) {
 app.factory('Messages', ['Restangular', function(Restangular) {
     return Restangular.service('messages');
 }]);
+
+
+function scrollToBottom() {
+    var chatWindow = document.querySelector('.the-chats');
+    var mostRecent = chatWindow.querySelector('li:last-child');
+    var mostRecentDimensions = mostRecent.getBoundingClientRect();
+    var chatWindowScrollY = chatWindow.scrollTop;
+
+    chatWindow.scrollTop = mostRecentDimensions.bottom + chatWindowScrollY;
+}

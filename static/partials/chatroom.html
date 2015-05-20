@@ -5,16 +5,16 @@
                 <h2>Rooms</h2>
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-repeat="item in rooms">
-                        <span ng-click="changeRoom(item)">{{ item.name }}</span>
+                        <a href="" ng-click="changeRoom(item)">{{ item.name }}</a>
                     </li>
                 </ul>
             </div>
 
-            <div ng-controller="UsersCtrl" class="col-sm-3 nav-column">
+            <div ng-controller="UsersCtrl">
                 <h2>Users</h2>
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-repeat="item in users">
-                        <span>{{ item.name }}</span>
+                        <a href="">{{ item.display_name }}</a>
                     </li>
                 </ul>
             </div>
@@ -25,7 +25,7 @@
         <div class="col-sm-9 chat-column">
             <div ng-controller="ChatRoomCtrl" class="chat-window">
                 <h2>{{ ChatStatus.selectedRoom.name }}</h2>
-                <ul class="list-unstyled">
+                <ul class="list-unstyled the-chats">
                     <li 
                         ng-repeat="item in ChatStatus.messages[ChatStatus.selectedRoom.id] | orderBy: 'posted'"
                         ng-init="user = idToUser(item.user)"

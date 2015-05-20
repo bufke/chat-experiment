@@ -3,7 +3,8 @@ var app = angular.module('ChatControllers', ['restangular']);
 app.factory('ChatStatus', function() {
     var data = {
         selectedRoom: 1,
-        messages: {}
+        messages: {},
+        users: {}
     };
     return data;
 });
@@ -20,30 +21,36 @@ app.controller('ChatRoomCtrl',
         user = $scope.users.filter(function(obj) {
             return obj.pk == id;
         });
-        return user[0].display_name;
+        return user[0];
     };
-    Users.getList().then(function(users) {
-        $scope.users = users;
-    });
 
     $dragon.onReady(function() {
-        $dragon.subscribe('messages', $scope.channel).then(function(response) {
+        $dragon.subscribe('profiles', 'profiles').then(function(response) {
             $scope.dataMapper = new DataMapper(response.data);
         });
-        //$dragon.subscribe('users', $scope.channel);
+        $dragon.getList('profiles', {}).then(function(response) {
+            $scope.users = response.data;
+        });
+        $dragon.subscribe('messages', 'messages');
     });
 
     $dragon.onChannelMessage(function(channels, message) {
-        if (indexOf.call(channels, $scope.channel) > -1) {
-            if (ChatStatus.messages[message.data.room].indexOf(message.data) == -1) {
-                message.data.posted = new Date(message.data.posted);
+        for(var i in channels) {
+            if (channels[i] == 'profiles') {
                 $scope.$apply(function() {
-                    ChatStatus.messages[message.data.room].push(message.data);
-
-                    setTimeout(function() {
-                        scrollToBottom();
-                    }, 30);
+                    $scope.dataMapper.mapData($scope.users, message);
                 });
+            } else if (channels[i] == 'messages') {
+                if (ChatStatus.messages[message.data.room].indexOf(message.data) == -1) {
+                    message.data.posted = new Date(message.data.posted);
+                    $scope.$apply(function() {
+                        ChatStatus.messages[message.data.room].push(message.data);
+
+                        setTimeout(function() {
+                            scrollToBottom();
+                        }, 30);
+                    });
+                }
             }
         }
     });

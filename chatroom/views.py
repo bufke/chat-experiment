@@ -34,6 +34,9 @@ class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
 
     def get_queryset(self):
-        user = self.request.user.profile
+        try:
+            user = self.request.user.profile
+        except TypeError:
+            return Room.objects.all()
         return Room.objects.filter(
             Q(organization__users=user) | Q(users=user)).distinct()

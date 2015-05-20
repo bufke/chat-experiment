@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'swampdragon_notifications',
 
     'chatroom',
+
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,7 +124,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 SWAMP_DRAGON_CONNECTION = ('chatroom.connection.notification_connection.ChatConnection', '/data')
 #SWAMP_DRAGON_CONNECTION = ('swampdragon_notifications.notification_connection.Connection', '/data')
 SWAMP_DRAGON_HEARTBEAT_ENABLED = True
-SWAMP_DRAGON_HEARTBEAT_FREQUENCY = 1000# * 60# * 5  # Five minutes
+SWAMP_DRAGON_HEARTBEAT_FREQUENCY = 1000 * 60 * 5  # Five minutes
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

@@ -3,6 +3,8 @@ from swampdragon.pubsub_providers.redis_publisher import get_redis_cli
 from swampdragon.pubsub_providers.data_publisher import publish_data
 from time import time
 from tornado.ioloop import PeriodicCallback
+from chatroom.models import Profile
+
 
 ONLINE_USERS = 'online_users'
 DEFAULT_WINDOW_SIZE = 60 * 5 * 1000  # Five minutes
@@ -45,6 +47,9 @@ def _clean():
             changed = True
             redis_cli.hdel(USER_LIST, u)
             remove_users.append(u)
+            profile = Profile.objects.get(pk=u)
+            profile.is_online = False
+            profile.save(update_fields=["is_online"])
     if changed:
         publish_online_users()
 
@@ -73,10 +78,10 @@ def add_user(id):
 
     # If the user was added to the global list
     # publish the user count
-    print('Not really adding a user but oh well!!!!!!!')
-    print(result)
     if result == 1:
-        print('redissssssssssss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        profile = Profile.objects.get(pk=id)
+        profile.is_online = True
+        profile.save(update_fields=["is_online"])
         publish_online_users()
 
 
@@ -96,6 +101,9 @@ def remove_user(id):
     if result < 1:
         redis_cli.hdel(USER_LIST, id)
         publish_online_users()
+    profile = Profile.objects.get(pk=id)
+    profile.is_online = False
+    profile.save(update_fields=["is_online"])
 
 
 def user_count():

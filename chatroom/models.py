@@ -1,10 +1,11 @@
 from django.db import models
 from swampdragon.models import SelfPublishModel
 from allauth.account.signals import user_signed_up
-from .dragon_serializers import MessageSerializer
+from .dragon_serializers import MessageSerializer, ProfileSerializer
 
 
-class Profile(models.Model):
+class Profile(SelfPublishModel, models.Model):
+    serializer_class = ProfileSerializer
     user = models.OneToOneField('auth.User', primary_key=True)
     display_name = models.CharField(max_length=100)
     is_online = models.BooleanField(default=False)

@@ -10,10 +10,35 @@ html, body, .chat-ng-view, .chat-container, .chat-row, .chat-column, .chat-windo
 
 .chat-window li {
 	padding: 7px 0;
+	line-height: 20px;
 }
 
 .chat-textbox {
 	position: fixed;
 	margin: 0 10px 10px 0;
 	bottom: 0;
+}
+
+.chat-date {
+	float: right;
+	color: #aaa;
+	font-size: 0.9em;
+	font-style: italic;
+	display: none;
+}
+
+.chat-window li:hover > .chat-date {
+	display: inline-block;
+}
+
+.online-status {
+	background-color: #CC0000;
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 10px;
+}
+
+.online-status.online {
+	background-color: #33CC33;
 }
